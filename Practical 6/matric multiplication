@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+int main() {
+    int n;
+
+    cout << "Enter number of matrices: ";
+    cin >> n;
+
+    vector<int> d(n + 1);
+
+    cout << "Enter " << n + 1 << " dimensions:\n";
+    cout << "Example: 10 30 5 60\n";
+
+    for (int i = 0; i <= n; i++) {
+        cin >> d[i];
+    }
+
+    vector<vector<int>> dp(n, vector<int>(n, 0));
+
+    
+    for (int length = 2; length <= n; length++) {
+        for (int i = 0; i <= n - length; i++) {
+            int j = i + length - 1;
+            dp[i][j] = INT_MAX;
+
+           
+            for (int k = i; k < j; k++) {
+                int cost = dp[i][k] + dp[k + 1][j]
+                         + d[i] * d[k + 1] * d[j + 1];
+
+                if (cost < dp[i][j]) {
+                    dp[i][j] = cost;
+                }
+            }
+        }
+    }
+
+    cout << "Minimum multiplication cost: " << dp[0][n - 1] << endl;
+
+    return 0;
+}
